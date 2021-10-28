@@ -1,8 +1,6 @@
 from functools import partial
 from typing import Callable
 
-from manim.constants import DOWN, LEFT, RIGHT
-from manim.utils.color import BLUE, GREEN, RED, WHITE
 from manim import (
     ApplyMethod,
     Axes,
@@ -18,6 +16,8 @@ from manim import (
     VGroup,
     Write,
 )
+from manim.constants import DOWN, LEFT, RIGHT
+from manim.utils.color import BLUE, GREEN, RED, WHITE
 from numpy import arange
 
 
@@ -43,7 +43,7 @@ class UniversalApproximation(Scene):
             Tex("$f = x^3 + x^2 - x - 1$", color=RED)
             .scale(0.7)
             .align_to(axes, RIGHT)
-            .shift(DOWN * 3)
+            .shift(DOWN * 2.2 + LEFT * 0.5)
         )
         self.add(axes)
         self.play(Create(cubic_graph), Write(cubic_label))
@@ -107,15 +107,13 @@ class UniversalApproximation(Scene):
                 color=BLUE,
             )
             .scale(0.7)
-            .align_to(axes, RIGHT)
-            .shift(DOWN * 3.5)
+            .align_to(cubic_label, LEFT)
+            .shift(DOWN * 2.7)
         )
         self.play(Create(approx_graph), Write(approx_label), Create(nn))
 
         for i, (relu, w, neuron) in enumerate(zip(relus, coefs, hidden_layer), start=1):
-            relu_graph = axes.get_graph(
-                relu, use_smoothing=False, num_sampled_graph_points_per_tick=10000
-            )
+            relu_graph = axes.get_graph(relu, use_smoothing=False)
             start, end = input_neuron.get_boundary_point(
                 RIGHT
             ), neuron.get_boundary_point(LEFT)
